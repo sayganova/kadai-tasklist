@@ -15,10 +15,20 @@ class TasksController extends Controller
      */
     public function index()
     {
-        $tasks = Task::all();
-            return view('tasks.index', [
-            'tasks' => $tasks,
-        ]);
+        $data = [];
+            if (\Auth::check()) {   
+            // 認証済みユーザ（閲覧者）を取得
+            $user = \Auth::user();
+            // ユーザとフォロー中ユーザの投稿の一覧を作成日時の降順で取得
+            $tasks = $user->tasks()->orderBy('created_at', 'desc')->paginate(10);
+
+            $data = [
+                'user' => $user,
+                'tasks' => $tasks,
+            ];
+        }
+            
+        return view('tasks.index', $data);
     }
 
     /**
@@ -48,6 +58,7 @@ class TasksController extends Controller
             'content' => 'required|max:255',
             ]);
         $task = new Task;
+        $task->user_id = \Auth::id();
         $task->status = $request->status;
         $task->content = $request->content;
         $task->save();

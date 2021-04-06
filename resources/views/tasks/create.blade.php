@@ -2,8 +2,10 @@
 
 @section('content')
 
+@if (Auth::check())
+
     <h1>タスク新規作成ページ</h1>
-    
+
     {!! Form::model($task, ['route' => 'tasks.store']) !!}
 
     <div class="row">
@@ -11,6 +13,7 @@
             
             {!! Form::model($task, ['route' => 'tasks.store']) !!}
                 <div class="form-group">
+                    
                     {!! Form::label('status', 'ステータス:') !!}
                     {!! Form::text('status', null, ['class' => 'form-control']) !!}
                 </div>
@@ -24,5 +27,15 @@
             {!! Form::close() !!}
         </div>
     </div>
+    
+    @else
+        <div class="center jumbotron">
+            <div class="text-center">
+                <h1>Welcome to the Tasklist</h1>
+                {{-- ユーザ登録ページへのリンク --}}
+                {!! link_to_route('signup.get', 'Sign up now!', [], ['class' => 'btn btn-lg btn-primary']) !!}
+            </div>
+        </div>
+@endif
 
 @endsection
