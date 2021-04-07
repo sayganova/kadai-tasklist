@@ -75,12 +75,10 @@ class TasksController extends Controller
     public function show($id)
     {
         $task = Task::findOrFail($id);
-        if (\Auth::id() === $task->user_id) {
+        
         return view('tasks.show', [
             'task' => $task,
-            ]);
-        }
-        return redirect('/');
+    ]);
     }
 
     /**
@@ -92,13 +90,11 @@ class TasksController extends Controller
     public function edit($id)
     {
         $task = Task::findOrFail($id);
-        if (\Auth::id() === $task->user_id) {
+       
         return view('tasks.edit', [
             'task' => $task,
             ]);
         }
-        return redirect('/');
-    }
 
     /**
      * Update the specified resource in storage.
@@ -131,10 +127,7 @@ class TasksController extends Controller
     {
          $task = Task::findOrFail($id);
          
-         if (\Auth::id() === $task->user_id) {
          $task->delete();
-         }
-         
-         return redirect('/');
+        
     }
 }
